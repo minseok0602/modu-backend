@@ -1,6 +1,21 @@
-# MODU
+<p align="center">
+  <img src="readme-assets/banner.jpg" width="680" alt="모두의 여행을 잇다, 이음 I:EUM">
+</p>
 
-**접근성 정보를 바탕으로 여행지를 찾고, AI로 일정을 구성하며, 보호자와 도착 소식을 공유하는 여행 서비스**
+# 이음 I:EUM · MODU 🧳
+
+> **모두의 여행을 잇다** — 접근성 정보로 여행지를 찾고, AI로 일정을 구성하며, 보호자와 도착 소식을 공유하는 여행 서비스
+
+![Java](https://img.shields.io/badge/Java_17-007396?style=flat-square&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot_3.5-6DB33F?style=flat-square&logo=springboot&logoColor=white)
+![Spring Security](https://img.shields.io/badge/Spring_Security-6DB33F?style=flat-square&logo=springsecurity&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL_8-4479A1?style=flat-square&logo=mysql&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis_7-DC382D?style=flat-square&logo=redis&logoColor=white)
+![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=flat-square&logo=openai&logoColor=white)
+![Gemini](https://img.shields.io/badge/Gemini-8E75B2?style=flat-square&logo=googlegemini&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase_FCM-FFCA28?style=flat-square&logo=firebase&logoColor=black)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
+![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=flat-square&logo=swagger&logoColor=black)
 
 여행지를 고를 때 필요한 정보는 사람마다 다릅니다. 휠체어 이용자는 이동 편의시설을, 시각·청각장애인은 안내 시설을, 영유아 동반 가족은 유아 편의시설을 확인해야 합니다. MODU는 이러한 조건으로 관광지를 검색하고, 선택한 장소를 여행 일정과 연결하는 Spring Boot 기반 백엔드입니다.
 
@@ -14,6 +29,14 @@
 | 보호자에게 여행 진행 상황 전달하기 | 사용자 요청 좌표로 도착 확인, 공유 설정에 따른 FCM 알림 |
 
 [주요 기능](#주요-기능) · [아키텍처](#아키텍처) · [설계와 구현](#설계와-구현) · [실행 방법](#실행-방법) · [주요 API](#주요-api) · [테스트](#테스트)
+
+## 서비스 한눈에 보기
+
+<p align="center">
+  <img src="readme-assets/features.jpg" width="760" alt="핵심 기능: 무장애 관광지 검색, 여행 일정 관리, AI 일정 자동 배치, 자연어로 일정 조작, 여행자 도착 알림">
+</p>
+
+휠체어 이용자, 고령자, 시각·청각 불편 사용자, 이동약자의 보호자를 위해 “어디가 좋을까?”가 아니라 “**갈 수 있을까?**”에서 출발하는 여행 계획을 돕습니다.
 
 ## 주요 기능
 
@@ -48,6 +71,12 @@ flowchart LR
     Tour[한국관광공사 TourAPI] --> Batch[초기 적재 / 변경분 동기화]
     Batch --> DB
 ```
+
+#### 배포 구성
+
+<p align="center">
+  <img src="readme-assets/architecture.jpg" width="760" alt="배포 아키텍처">
+</p>
 
 Spring MVC 기반 API 서버이며, 외부 HTTP API 호출에는 `WebClient`를 사용합니다. MySQL에는 관광지·접근성·일정·경로 캐시·알림 데이터를 저장하고, Redis에는 인증 토큰 상태와 인기 관광지 순위를 저장합니다.
 
