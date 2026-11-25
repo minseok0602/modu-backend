@@ -1,0 +1,211 @@
+[ {
+  "mode" : "before",
+  "manual_edit_finished_before_ai_response" : false,
+  "requested_manual_order" : [ 2, 1, 3 ],
+  "final_order" : [ 2, 1, 3 ],
+  "manual_edit_preserved" : false,
+  "distinct_visit_orders" : 2,
+  "node_count" : 3,
+  "final_nodes" : [ {
+    "id" : 1,
+    "attractionId" : 1,
+    "date" : [ 2026, 6, 1 ],
+    "order" : 2,
+    "latitude" : 35.1000000,
+    "longitude" : 128.1000000,
+    "contentType" : "12"
+  }, {
+    "id" : 2,
+    "attractionId" : 2,
+    "date" : [ 2026, 6, 1 ],
+    "order" : 1,
+    "latitude" : 35.1100000,
+    "longitude" : 128.1100000,
+    "contentType" : "14"
+  }, {
+    "id" : 3,
+    "attractionId" : 3,
+    "date" : [ 2026, 6, 1 ],
+    "order" : 2,
+    "latitude" : 35.1200000,
+    "longitude" : 128.1200000,
+    "contentType" : "39"
+  } ],
+  "ai_called_inside_transaction" : [ true ],
+  "recommendation_conflict" : false
+}, {
+  "mode" : "after",
+  "manual_edit_finished_before_ai_response" : true,
+  "requested_manual_order" : [ 5, 4, 6 ],
+  "final_order" : [ 5, 4, 6 ],
+  "manual_edit_preserved" : true,
+  "distinct_visit_orders" : 3,
+  "node_count" : 3,
+  "final_nodes" : [ {
+    "id" : 4,
+    "attractionId" : 4,
+    "date" : [ 2026, 6, 1 ],
+    "order" : 2,
+    "latitude" : 35.1000000,
+    "longitude" : 128.1000000,
+    "contentType" : "12"
+  }, {
+    "id" : 5,
+    "attractionId" : 5,
+    "date" : [ 2026, 6, 1 ],
+    "order" : 1,
+    "latitude" : 35.1100000,
+    "longitude" : 128.1100000,
+    "contentType" : "14"
+  }, {
+    "id" : 6,
+    "attractionId" : 6,
+    "date" : [ 2026, 6, 1 ],
+    "order" : 3,
+    "latitude" : 35.1200000,
+    "longitude" : 128.1200000,
+    "contentType" : "39"
+  } ],
+  "ai_called_inside_transaction" : [ false ],
+  "recommendation_conflict" : true
+}, {
+  "mode" : "before",
+  "manual_edit_finished_before_ai_response" : false,
+  "requested_manual_order" : [ 8, 7, 9 ],
+  "final_order" : [ 8, 7, 9 ],
+  "manual_edit_preserved" : false,
+  "distinct_visit_orders" : 2,
+  "node_count" : 3,
+  "final_nodes" : [ {
+    "id" : 7,
+    "attractionId" : 7,
+    "date" : [ 2026, 6, 1 ],
+    "order" : 2,
+    "latitude" : 35.1000000,
+    "longitude" : 128.1000000,
+    "contentType" : "12"
+  }, {
+    "id" : 8,
+    "attractionId" : 8,
+    "date" : [ 2026, 6, 1 ],
+    "order" : 1,
+    "latitude" : 35.1100000,
+    "longitude" : 128.1100000,
+    "contentType" : "14"
+  }, {
+    "id" : 9,
+    "attractionId" : 9,
+    "date" : [ 2026, 6, 1 ],
+    "order" : 2,
+    "latitude" : 35.1200000,
+    "longitude" : 128.1200000,
+    "contentType" : "39"
+  } ],
+  "ai_called_inside_transaction" : [ true ],
+  "recommendation_conflict" : false
+}, {
+  "mode" : "after",
+  "manual_edit_finished_before_ai_response" : true,
+  "requested_manual_order" : [ 11, 10, 12 ],
+  "final_order" : [ 11, 10, 12 ],
+  "manual_edit_preserved" : true,
+  "distinct_visit_orders" : 3,
+  "node_count" : 3,
+  "final_nodes" : [ {
+    "id" : 10,
+    "attractionId" : 10,
+    "date" : [ 2026, 6, 1 ],
+    "order" : 2,
+    "latitude" : 35.1000000,
+    "longitude" : 128.1000000,
+    "contentType" : "12"
+  }, {
+    "id" : 11,
+    "attractionId" : 11,
+    "date" : [ 2026, 6, 1 ],
+    "order" : 1,
+    "latitude" : 35.1100000,
+    "longitude" : 128.1100000,
+    "contentType" : "14"
+  }, {
+    "id" : 12,
+    "attractionId" : 12,
+    "date" : [ 2026, 6, 1 ],
+    "order" : 3,
+    "latitude" : 35.1200000,
+    "longitude" : 128.1200000,
+    "contentType" : "39"
+  } ],
+  "ai_called_inside_transaction" : [ false ],
+  "recommendation_conflict" : true
+}, {
+  "mode" : "before",
+  "manual_edit_finished_before_ai_response" : false,
+  "requested_manual_order" : [ 14, 13, 15 ],
+  "final_order" : [ 14, 13, 15 ],
+  "manual_edit_preserved" : false,
+  "distinct_visit_orders" : 2,
+  "node_count" : 3,
+  "final_nodes" : [ {
+    "id" : 13,
+    "attractionId" : 13,
+    "date" : [ 2026, 6, 1 ],
+    "order" : 2,
+    "latitude" : 35.1000000,
+    "longitude" : 128.1000000,
+    "contentType" : "12"
+  }, {
+    "id" : 14,
+    "attractionId" : 14,
+    "date" : [ 2026, 6, 1 ],
+    "order" : 1,
+    "latitude" : 35.1100000,
+    "longitude" : 128.1100000,
+    "contentType" : "14"
+  }, {
+    "id" : 15,
+    "attractionId" : 15,
+    "date" : [ 2026, 6, 1 ],
+    "order" : 2,
+    "latitude" : 35.1200000,
+    "longitude" : 128.1200000,
+    "contentType" : "39"
+  } ],
+  "ai_called_inside_transaction" : [ true ],
+  "recommendation_conflict" : false
+}, {
+  "mode" : "after",
+  "manual_edit_finished_before_ai_response" : true,
+  "requested_manual_order" : [ 17, 16, 18 ],
+  "final_order" : [ 17, 16, 18 ],
+  "manual_edit_preserved" : true,
+  "distinct_visit_orders" : 3,
+  "node_count" : 3,
+  "final_nodes" : [ {
+    "id" : 16,
+    "attractionId" : 16,
+    "date" : [ 2026, 6, 1 ],
+    "order" : 2,
+    "latitude" : 35.1000000,
+    "longitude" : 128.1000000,
+    "contentType" : "12"
+  }, {
+    "id" : 17,
+    "attractionId" : 17,
+    "date" : [ 2026, 6, 1 ],
+    "order" : 1,
+    "latitude" : 35.1100000,
+    "longitude" : 128.1100000,
+    "contentType" : "14"
+  }, {
+    "id" : 18,
+    "attractionId" : 18,
+    "date" : [ 2026, 6, 1 ],
+    "order" : 3,
+    "latitude" : 35.1200000,
+    "longitude" : 128.1200000,
+    "contentType" : "39"
+  } ],
+  "ai_called_inside_transaction" : [ false ],
+  "recommendation_conflict" : true
+} ]

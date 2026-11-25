@@ -1,0 +1,10 @@
+{
+  "java" : "17.0.19",
+  "os" : "Windows 11",
+  "pool_size" : 5,
+  "available_processors" : 22,
+  "database" : "MySQL 8.0, isolated local container",
+  "stub" : "fixed valid recommendation JSON; Kakao 1000 meters / 120 seconds",
+  "sampling_ms" : 10,
+  "measurement_scope" : "production service boundary and real external HTTP clients; excludes servlet/auth overhead"
+}

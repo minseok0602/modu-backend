@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "gms.openai")
 public class GmsOpenAIProperties {
 
+    private java.time.Duration requestTimeout = java.time.Duration.ofSeconds(60);
+
     private String apiKey;
     private String model;
     private String baseUrl;

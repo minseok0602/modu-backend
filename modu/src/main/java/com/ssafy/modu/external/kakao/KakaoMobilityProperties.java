@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "kakao.mobility")
 public class KakaoMobilityProperties {
 
+    private java.time.Duration requestTimeout = java.time.Duration.ofSeconds(10);
+
     private String restApiKey;
     private String baseUrl;
 }

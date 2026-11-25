@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.ssafy.modu.Node.service.NodeServiceTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-25T05:59:16.845Z" hostname="DESKTOP-MS327CL" time="3.198">
+  <properties/>
+  <testcase name="요청에 같은 nodeId가 중복되면 예외가 발생한다" classname="com.ssafy.modu.Node.service.NodeServiceTest" time="2.916"/>
+  <testcase name="프론트에서 받은 날짜별 노드 배치 정보를 그대로 visitDate와 visitOrder에 저장한다" classname="com.ssafy.modu.Node.service.NodeServiceTest" time="0.085"/>
+  <testcase name="여행 기간 밖의 날짜로 노드를 배치하면 예외가 발생한다" classname="com.ssafy.modu.Node.service.NodeServiceTest" time="0.026"/>
+  <testcase name="노드를 삭제하면 같은 방문일자의 남은 노드 순서를 1부터 다시 정렬한다" classname="com.ssafy.modu.Node.service.NodeServiceTest" time="0.07"/>
+  <testcase name="관광지를 스케줄에 노드로 추가하면 visitDate와 visitOrder는 null 상태로 저장된다" classname="com.ssafy.modu.Node.service.NodeServiceTest" time="0.045"/>
+  <testcase name="해당 스케줄에 속하지 않은 노드를 배치하려고 하면 예외가 발생한다" classname="com.ssafy.modu.Node.service.NodeServiceTest" time="0.018"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
