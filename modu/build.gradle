@@ -49,3 +49,29 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+// Isolated, opt-in MySQL experiments. Does not boot production integrations or
+// require the unrelated legacy SpringBootTest environment.
+sourceSets {
+	experiment {
+		compileClasspath += sourceSets.main.output
+		runtimeClasspath += sourceSets.main.output
+	}
+}
+configurations {
+	experimentImplementation.extendsFrom testImplementation
+	experimentRuntimeOnly.extendsFrom testRuntimeOnly
+	experimentCompileOnly.extendsFrom compileOnly
+	experimentAnnotationProcessor.extendsFrom annotationProcessor
+}
+tasks.register('routeExperiment', Test) {
+	description = 'Run isolated route transaction correctness and resource experiments'
+	group = 'verification'
+	testClassesDirs = sourceSets.experiment.output.classesDirs
+	classpath = sourceSets.experiment.runtimeClasspath
+	useJUnitPlatform()
+	maxParallelForks = 1
+	systemProperties System.properties.findAll { key, value -> key.toString().startsWith('ieum.') }
+	outputs.upToDateWhen { false }
+	testLogging { events 'passed', 'failed'; showStandardStreams = true }
+}

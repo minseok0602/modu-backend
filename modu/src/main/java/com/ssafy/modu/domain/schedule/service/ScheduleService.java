@@ -69,7 +69,7 @@ public class ScheduleService {
     public ScheduleResponse updateSchedule(Long userId, Long scheduleId, ScheduleUpdateRequest request) {
         validateScheduleRequest(request.getStartDate(), request.getEndDate());
 
-        Schedule schedule = getSchedule(userId, scheduleId);
+        Schedule schedule = getScheduleForUpdate(userId, scheduleId);
         schedule.update(
                 request.getTitle(),
                 request.getStartDate(),
@@ -81,7 +81,7 @@ public class ScheduleService {
 
     @Transactional
     public void deleteSchedule(Long userId, Long scheduleId) {
-        Schedule schedule = getSchedule(userId, scheduleId);
+        Schedule schedule = getScheduleForUpdate(userId, scheduleId);
 
         edgeService.deleteEdgesByScheduleId(scheduleId);
 
@@ -99,7 +99,7 @@ public class ScheduleService {
             Long scheduleId,
             boolean enabled
     ) {
-        Schedule schedule = getSchedule(userId, scheduleId);
+        Schedule schedule = getScheduleForUpdate(userId, scheduleId);
         schedule.updateArrivalShared(enabled);
     }
 
@@ -110,6 +110,11 @@ public class ScheduleService {
 
     private Schedule getScheduleWithNodes(Long userId, Long scheduleId) {
         return scheduleRepository.findWithNodesByIdAndUser_Id(scheduleId, userId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.SCHEDULE_NOT_FOUND));
+    }
+
+    private Schedule getScheduleForUpdate(Long userId, Long scheduleId) {
+        return scheduleRepository.findLockedByIdAndUserId(scheduleId, userId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.SCHEDULE_NOT_FOUND));
     }
 

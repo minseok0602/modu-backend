@@ -121,7 +121,9 @@ class RearrangeNodesToolHandlerTest {
                 user.getId(),
                 schedule.getId(),
                 date,
-                true
+                true,
+                null,
+                com.ssafy.modu.domain.aicommand.tool.core.enums.AiCommandScope.SCHEDULE_SCOPED
         );
 
         JsonNode arguments = objectMapper.readTree("""

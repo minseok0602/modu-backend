@@ -42,7 +42,7 @@ public class NodeService {
      */
     @Transactional
     public NodeResponse addNode(Long userId, Long scheduleId, NodeCreateRequest request) {
-        Schedule schedule = getSchedule(userId, scheduleId);
+        Schedule schedule = getScheduleForUpdate(userId, scheduleId);
 
         if (request.getAttractionId() == null) {
             throw new BusinessException(ErrorCode.ATTRACTION_NOT_FOUND);
@@ -53,6 +53,7 @@ public class NodeService {
 
         Node node = Node.from(attraction);
         schedule.addNode(node);
+        schedule.advanceRouteRevision();
 
         Node savedNode = nodeRepository.save(node);
         eventPublisher.publishEvent(
@@ -78,7 +79,10 @@ public class NodeService {
      */
     @Transactional
     public void deleteNode(Long userId, Long scheduleId, Long nodeId) {
-        getSchedule(userId, scheduleId);
+        Schedule schedule = getScheduleForUpdate(userId, scheduleId);
+        schedule.advanceRouteRevision();
+        // Bulk Edge deletion clears the persistence context; flush the revision first.
+        scheduleRepository.flush();
 
         Node node = nodeRepository.findByIdAndSchedule_Id(nodeId, scheduleId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NODE_NOT_FOUND));
@@ -208,6 +212,7 @@ public class NodeService {
          * 인접 Edge를 계산해야 하므로 flush가 필요하다.
          */
         if (!affectedDates.isEmpty() || !unplacedNodes.isEmpty()) {
+            schedule.advanceRouteRevision();
             nodeRepository.flush();
 
             for (Node node : unplacedNodes) {
@@ -222,12 +227,18 @@ public class NodeService {
     }
 
     private Schedule getScheduleWithNodes(Long userId, Long scheduleId) {
+        getScheduleForUpdate(userId, scheduleId);
         return scheduleRepository.findWithNodesByIdAndUser_Id(scheduleId, userId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.SCHEDULE_NOT_FOUND));
     }
 
     private Schedule getSchedule(Long userId, Long scheduleId) {
         return scheduleRepository.findByIdAndUser_Id(scheduleId, userId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.SCHEDULE_NOT_FOUND));
+    }
+
+    private Schedule getScheduleForUpdate(Long userId, Long scheduleId) {
+        return scheduleRepository.findLockedByIdAndUserId(scheduleId, userId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.SCHEDULE_NOT_FOUND));
     }
 

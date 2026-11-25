@@ -78,6 +78,14 @@ public class Edge {
         this.distanceMeters = distanceMeters;
     }
 
+    /** Request-local candidate, never persisted. New candidates use negative IDs. */
+    public static Edge planningCandidate(long candidateId, Schedule schedule, Node fromNode,
+                                         Node toNode, int minutes, int meters) {
+        Edge edge = create(schedule, fromNode, toNode, minutes, meters);
+        edge.id = candidateId;
+        return edge;
+    }
+
     @PrePersist
     protected void onCreate() {
         LocalDateTime now = LocalDateTime.now();

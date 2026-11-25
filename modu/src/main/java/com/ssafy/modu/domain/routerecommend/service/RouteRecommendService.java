@@ -15,6 +15,8 @@ import com.ssafy.modu.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -28,6 +30,8 @@ public class RouteRecommendService {
     private final AIService aiService;
     private final ScheduleRepository scheduleRepository;
     private final EdgeService edgeService;
+    private final RouteRecommendationStore recommendationStore;
+    private final RouteRecommendationResolver recommendationResolver;
 
     /**
      * AI를 이용해서 일정 내 노드 방문 순서를 자동 추천한다.
@@ -41,12 +45,37 @@ public class RouteRecommendService {
      * 6. AI 요청에는 fixed + inferred를 합친 effective boundary를 전달한다.
      * 7. AI 응답은 서버가 검증한 뒤 DB에 반영한다.
      */
-    @Transactional
+    @Transactional(propagation = Propagation.SUPPORTS)
     public ScheduleDetailResponse autoArrange(
             Long scheduleId,
             Long userId,
             AutoArrangeRequest request
     ) {
+        // A natural-language workflow can already own uncommitted writes.
+        // Preserve its all-or-nothing contract rather than silently committing
+        // partial tool actions in independent transactions.
+        if (TransactionSynchronizationManager.isActualTransactionActive()) {
+            return autoArrangeInExistingTransaction(scheduleId, userId, request);
+        }
+        RouteRecommendationStore.Snapshot snapshot = recommendationStore.load(scheduleId, userId);
+        Schedule planned = snapshot.schedule();
+        Map<LocalDate, AutoArrangeRequest.DayCondition> conditions = toConditionMap(request);
+        validateRequest(planned, planned.getNodes(), conditions);
+        PlanningResult plan = placeNodes(planned, planned.getNodes(), conditions);
+        RouteRecommendationStore.ResolvedRoutes routes = recommendationResolver.resolve(snapshot);
+        RouteRecommendAiRequest aiRequest = buildAiRequest(planned, planned.getNodes(),
+                routes.candidates(), plan.boundaryMap());
+        RouteRecommendAiResponse aiResponse = aiService.recommendRoute(aiRequest);
+        validateAiResponse(aiRequest, aiResponse, conditions);
+        applyRecommendedOrder(planned.getNodes(), aiResponse);
+        return recommendationStore.apply(userId, snapshot, routes);
+    }
+
+    private ScheduleDetailResponse autoArrangeInExistingTransaction(
+            Long scheduleId, Long userId, AutoArrangeRequest request
+    ) {
+        scheduleRepository.findLockedByIdAndUserId(scheduleId, userId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.SCHEDULE_NOT_FOUND));
         Schedule schedule = scheduleRepository.findWithNodesByIdAndUser_Id(scheduleId, userId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.SCHEDULE_NOT_FOUND));
 
@@ -78,6 +107,7 @@ public class RouteRecommendService {
         validateAiResponse(aiRequest, aiResponse, conditionMap);
 
         applyRecommendedOrder(nodes, aiResponse);
+        schedule.advanceRouteRevision();
 
         List<Edge> finalEdges = edgeService.getEdgesByScheduleId(scheduleId);
 
@@ -1107,7 +1137,15 @@ public class RouteRecommendService {
                 .map(RouteRecommendAiResponse.NodeResponse::getNodeId)
                 .collect(Collectors.toSet());
 
-        if (!inputNodeIds.equals(outputNodeIds)) {
+        Set<LocalDate> requestDates = request.getDays().stream()
+                .map(RouteRecommendAiRequest.DayRequest::getDate).collect(Collectors.toSet());
+        Set<LocalDate> responseDates = new HashSet<>();
+        for (RouteRecommendAiResponse.DayResponse day : response.getDays()) {
+            if (!requestDates.contains(day.getDate()) || !responseDates.add(day.getDate())) {
+                throw new BusinessException(ErrorCode.INVALID_AI_RECOMMENDATION);
+            }
+        }
+        if (!inputNodeIds.equals(outputNodeIds) || outputNodes.size() != inputNodeIds.size()) {
             throw new BusinessException(ErrorCode.INVALID_AI_RECOMMENDATION);
         }
 

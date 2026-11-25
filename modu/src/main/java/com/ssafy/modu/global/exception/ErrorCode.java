@@ -25,6 +25,7 @@ public enum ErrorCode {
     ATTRACTION_NOT_FOUND(HttpStatus.NOT_FOUND, 904, "존재하지 않는 관광지입니다."),
 
     SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, 904, "존재하지 않는 여행 스케줄입니다."),
+    SCHEDULE_CHANGED_DURING_RECOMMENDATION(HttpStatus.CONFLICT, 943, "추천 중 일정이 변경되었습니다. 최신 일정을 확인한 후 다시 요청해주세요."),
     NODE_NOT_FOUND(HttpStatus.NOT_FOUND, 904, "존재하지 않는 노드입니다."),
     INVALID_TRIP_DATE(HttpStatus.BAD_REQUEST, 904, "여행 시작일은 종료일보다 늦을 수 없습니다."),
     INVALID_BUDGET(HttpStatus.BAD_REQUEST, 904, "예산은 0원 이상이어야 합니다."),

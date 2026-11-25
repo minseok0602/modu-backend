@@ -34,27 +34,23 @@ public class KakaoMobilityClient {
 
         try {
             response = webClient.get()
-                    .uri(uriBuilder -> uriBuilder
-                            .scheme("https")
-                            .host("apis-navi.kakaomobility.com")
+                    .uri(org.springframework.web.util.UriComponentsBuilder
+                            .fromUriString(properties.getBaseUrl())
                             .path(KakaoMobilityPath.DIRECTIONS)
                             .queryParam("origin", origin)
                             .queryParam("destination", destination)
                             .queryParam("priority", "RECOMMEND")
                             .queryParam("summary", "true")
-                            .build()
+                            .build().toUri()
                     )
                     .header(HttpHeaders.AUTHORIZATION, "KakaoAK " + properties.getRestApiKey())
                     .retrieve()
                     .bodyToMono(KakaoDirectionResponse.class)
+                    .timeout(properties.getRequestTimeout())
                     .block();
 
-        } catch (WebClientResponseException e) {
-            log.error("카카오 길찾기 API 호출 실패. status={}, body={}",
-                    e.getStatusCode(),
-                    e.getResponseBodyAsString(),
-                    e
-            );
+        } catch (RuntimeException e) {
+            log.error("카카오 길찾기 API 호출 실패", e);
             throw new BusinessException(ErrorCode.KAKAO_DIRECTIONS_API_ERROR);
         }
 

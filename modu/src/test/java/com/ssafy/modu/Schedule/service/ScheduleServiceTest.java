@@ -44,6 +44,9 @@ class ScheduleServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private com.ssafy.modu.domain.edge.service.EdgeService edgeService;
+
     @Test
     @DisplayName("스케줄 생성에 성공한다")
     void createSchedule_success() {
@@ -273,7 +276,7 @@ class ScheduleServiceTest {
                 200000
         );
 
-        when(scheduleRepository.findByIdAndUser_Id(scheduleId, userId))
+        when(scheduleRepository.findLockedByIdAndUserId(scheduleId, userId))
                 .thenReturn(Optional.of(schedule));
 
         // when
@@ -295,7 +298,7 @@ class ScheduleServiceTest {
 
         Schedule schedule = createSchedule(scheduleId, createUser(userId), "대구 여행");
 
-        when(scheduleRepository.findByIdAndUser_Id(scheduleId, userId))
+        when(scheduleRepository.findLockedByIdAndUserId(scheduleId, userId))
                 .thenReturn(Optional.of(schedule));
 
         // when

@@ -42,6 +42,15 @@ public class Schedule {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    // Child changes must participate in the same revision as schedule changes.
+    // All itinerary writers increment this while holding the schedule row lock.
+    @Column(name = "route_revision", nullable = false, columnDefinition = "bigint not null default 0")
+    private long routeRevision;
+
+    public void advanceRouteRevision() {
+        routeRevision++;
+    }
+
     @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("visitDate ASC, visitOrder ASC, id ASC")
     private List<Node> nodes = new ArrayList<>();
@@ -59,6 +68,7 @@ public class Schedule {
     }
 
     public void update(String title, LocalDate startDate, LocalDate endDate) {
+        advanceRouteRevision();
         this.title = normalizeTitle(title);
         this.startDate = startDate;
         this.endDate = endDate;
@@ -89,6 +99,7 @@ public class Schedule {
     }
 
     public void updateArrivalShared(boolean arrivalShared) {
+        advanceRouteRevision();
         this.arrivalShared = arrivalShared;
     }
 }

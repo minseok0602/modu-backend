@@ -62,6 +62,7 @@ public class GmsOpenAIClient implements AIClient {
                     .bodyValue(requestBody)
                     .retrieve()
                     .bodyToMono(String.class)
+                    .timeout(properties.getRequestTimeout())
                     .block();
         } catch (WebClientResponseException e) {
             log.error("GMS OpenAI API 호출 실패. status={}, body={}",
@@ -135,6 +136,7 @@ public class GmsOpenAIClient implements AIClient {
                     .bodyValue(requestBody)
                     .retrieve()
                     .bodyToMono(String.class)
+                    .timeout(properties.getRequestTimeout())
                     .block();
         } catch (WebClientResponseException e) {
             log.error("GMS OpenAI Tool Calling API 호출 실패. status={}, body={}",

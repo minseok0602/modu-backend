@@ -47,6 +47,12 @@ class NodeServiceTest {
     @Mock
     private AttractionRepository attractionRepository;
 
+    @Mock
+    private com.ssafy.modu.domain.edge.service.EdgeService edgeService;
+
+    @Mock
+    private org.springframework.context.ApplicationEventPublisher eventPublisher;
+
     @Test
     @DisplayName("관광지를 스케줄에 노드로 추가하면 visitDate와 visitOrder는 null 상태로 저장된다")
     void addNode_success() {
@@ -61,7 +67,7 @@ class NodeServiceTest {
         NodeCreateRequest request = new NodeCreateRequest();
         ReflectionTestUtils.setField(request, "attractionId", attractionId);
 
-        when(scheduleRepository.findByIdAndUser_Id(scheduleId, userId))
+        when(scheduleRepository.findLockedByIdAndUserId(scheduleId, userId))
                 .thenReturn(Optional.of(schedule));
         when(attractionRepository.findById(attractionId))
                 .thenReturn(Optional.of(attraction));
@@ -123,6 +129,8 @@ class NodeServiceTest {
 
         when(scheduleRepository.findWithNodesByIdAndUser_Id(scheduleId, userId))
                 .thenReturn(Optional.of(schedule));
+        when(scheduleRepository.findLockedByIdAndUserId(scheduleId, userId))
+                .thenReturn(Optional.of(schedule));
 
         // when
         ScheduleDetailResponse response = nodeService.updateNodeArrangement(userId, scheduleId, request);
@@ -163,6 +171,8 @@ class NodeServiceTest {
 
         when(scheduleRepository.findWithNodesByIdAndUser_Id(scheduleId, userId))
                 .thenReturn(Optional.of(schedule));
+        when(scheduleRepository.findLockedByIdAndUserId(scheduleId, userId))
+                .thenReturn(Optional.of(schedule));
 
         // when & then
         assertThatThrownBy(() -> nodeService.updateNodeArrangement(userId, scheduleId, request))
@@ -195,6 +205,8 @@ class NodeServiceTest {
 
         when(scheduleRepository.findWithNodesByIdAndUser_Id(scheduleId, userId))
                 .thenReturn(Optional.of(schedule));
+        when(scheduleRepository.findLockedByIdAndUserId(scheduleId, userId))
+                .thenReturn(Optional.of(schedule));
 
         // when & then
         assertThatThrownBy(() -> nodeService.updateNodeArrangement(userId, scheduleId, request))
@@ -223,6 +235,8 @@ class NodeServiceTest {
         );
 
         when(scheduleRepository.findWithNodesByIdAndUser_Id(scheduleId, userId))
+                .thenReturn(Optional.of(schedule));
+        when(scheduleRepository.findLockedByIdAndUserId(scheduleId, userId))
                 .thenReturn(Optional.of(schedule));
 
         // when & then
@@ -254,7 +268,7 @@ class NodeServiceTest {
         node2.updateVisitInfo(2, visitDate);
         node3.updateVisitInfo(3, visitDate);
 
-        when(scheduleRepository.findByIdAndUser_Id(scheduleId, userId))
+        when(scheduleRepository.findLockedByIdAndUserId(scheduleId, userId))
                 .thenReturn(Optional.of(schedule));
         when(nodeRepository.findByIdAndSchedule_Id(deleteNodeId, scheduleId))
                 .thenReturn(Optional.of(node2));
@@ -293,11 +307,11 @@ class NodeServiceTest {
         Attraction attraction = mock(Attraction.class);
 
         lenient().when(attraction.getId()).thenReturn(attractionId);
-        when(attraction.getContentTypeId()).thenReturn("12");
-        when(attraction.getName()).thenReturn(name);
-        when(attraction.getAddress()).thenReturn("대구광역시 테스트 주소");
-        when(attraction.getLatitude()).thenReturn(BigDecimal.valueOf(35.8012345));
-        when(attraction.getLongitude()).thenReturn(BigDecimal.valueOf(128.5123456));
+        lenient().when(attraction.getContentTypeId()).thenReturn("12");
+        lenient().when(attraction.getName()).thenReturn(name);
+        lenient().when(attraction.getAddress()).thenReturn("대구광역시 테스트 주소");
+        lenient().when(attraction.getLatitude()).thenReturn(BigDecimal.valueOf(35.8012345));
+        lenient().when(attraction.getLongitude()).thenReturn(BigDecimal.valueOf(128.5123456));
 
         return attraction;
     }
